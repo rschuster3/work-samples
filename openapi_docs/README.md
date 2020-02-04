@@ -1,3 +1,6 @@
+# What's This?
+This is a PoC "Hello World" app to use Cloud Build to auto-deploy a K8S cluster when we trigger via git tags or pushes.
+
 ## Two Kinds of Deploys
 Notice there are two `cloudbuild.yaml` files in this microservice. One will trigger on tag deploys (`cloudbuild-tag-deploy.yaml`) and the other will trigger on push deploys (`cloudbuild-sha-deploy.yaml`). Each utilizes a different Cloud Build default variable: `$TAG_NAME` or `$COMMIT_SHA`.
 
@@ -56,5 +59,4 @@ Verify the deploy looks good. If it doesn't, repeat the steps above with a diffe
 
 
 ## Cleanup 
------
 If you ever wanted to delete/destroy this microservice, this document talks about cleanup steps: https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build#delete_the_resources.
