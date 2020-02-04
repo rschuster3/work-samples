@@ -1,0 +1,21 @@
+FROM gcr.io/cloud-builders/gcloud-slim
+
+ARG _PROJECT_ID
+ARG _TAG_NAME
+ARG _CREDS_FILE
+
+ENV PROJECT_ID=${_PROJECT_ID}
+ENV TAG_NAME=${_TAG_NAME}
+
+# Install kubectl component
+RUN /builder/google-cloud-sdk/bin/gcloud -q components install kubectl
+
+# Auth to gcloud
+COPY ./__dev_tools__ /__dev_tools__
+RUN gcloud auth activate-service-account --key-file=/__dev_tools__/auto_deployment/${_CREDS_FILE}.json
+
+# Update and apply manifests
+COPY ./openapi_docs /openapi_docs
+WORKDIR /openapi_docs
+RUN chmod 777 deploy_k8s.sh
+RUN ./deploy_k8s.sh

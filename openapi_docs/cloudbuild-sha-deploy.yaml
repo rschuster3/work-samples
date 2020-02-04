@@ -1,0 +1,64 @@
+steps:
+# This step runs the unit tests on the app
+- name: 'gcr.io/cloud-builders/docker'
+  id: pytest
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/pytest'
+  - '.'
+  - '-f'
+  - 'openapi_docs/Dockerfile_pytest'
+
+# This step builds the container image.
+- name: 'gcr.io/cloud-builders/docker'
+  id: image-build
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/openapi-docs:$COMMIT_SHA'
+  - '.'
+  - '-f'
+  - 'openapi_docs/Dockerfile_app'
+  waitFor: ['pytest']
+
+# This step pushes the image to Container Registry
+# The PROJECT_ID and TAG_NAME variables are automatically
+# replaced by Cloud Build.
+- name: 'gcr.io/cloud-builders/docker'
+  id: image-push
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/openapi-docs:$COMMIT_SHA'
+  waitFor: ['image-build']
+
+# Decrypt gcloud credentials for deploy
+- name: gcr.io/cloud-builders/gcloud
+  id: decrypt-deploy-secret
+  args:
+  - kms
+  - decrypt
+  - --ciphertext-file=__dev_tools__/auto_deployment/$_CREDS_FILE.json.enc
+  - --plaintext-file=__dev_tools__/auto_deployment/$_CREDS_FILE.json
+  - --location=global
+  - --keyring=$PROJECT_ID
+  - --key=app-deploy-credentials
+
+# Deploy the new version of our container image
+# in the openapi-docs Kubernetes Engine cluster.
+- name: 'gcr.io/cloud-builders/docker'
+  id: deploy-manifest
+  args:
+  - 'build'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/Dockerfile_deploy'
+  - '.'
+  - '-f'
+  - 'openapi_docs/Dockerfile_deploy'
+  - '--build-arg'
+  - '_TAG_NAME=$COMMIT_SHA'
+  - '--build-arg'
+  - '_PROJECT_ID=$PROJECT_ID'
+  - '--build-arg'
+  - '_CREDS_FILE=$_CREDS_FILE'
+  waitFor: ['image-push', 'decrypt-deploy-secret']
