@@ -1,14 +1,11 @@
 ## Two Kinds of Deploys
------
 Notice there are two `cloudbuild.yaml` files in this microservice. One will trigger on tag deploys (`cloudbuild-tag-deploy.yaml`) and the other will trigger on push deploys (`cloudbuild-sha-deploy.yaml`). Each utilizes a different Cloud Build default variable: `$TAG_NAME` or `$COMMIT_SHA`.
 
 
 ## Setup
------
 These are things you only have to do once when you're first creating this microservice!
 
 ### Permissions
------
 Cloud Build needs permissions to use Kubernetes. This only needs to be done by one person once, but I'm noting it here for posterity/debugging.
 ```
 export PROJECT_ID=some-project
@@ -21,7 +18,6 @@ gcloud projects add-iam-policy-binding ${PROJECT_NUMBER} \
 
 
 ## Rollbacks
------
 You should have `gcloud` installed and authenticated, and you should have installed `kubectl` for `gcloud`:
 
 `gcloud components install kubectl`
