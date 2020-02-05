@@ -1,22 +1,3 @@
-/********************************************************************************************************
-  neopixel_gradient2:
-  Written by Scott Kildall
-  
-  This sketch will show an animated gradient using math to adjust the gradient levels for each pixel.
-  
----------------------------------------------------------------------------------------------------------
-NeoPixel Information for initializing the strip, below
-  60ma/pixel for current load
-  Parameter 1 = number of pixels in strip
-  Parameter 2 = pin number (most are valid)
-  Parameter 3 = pixel type flags, add together as needed:
-    NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
-    NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
-    NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
-    NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-
-**********************************************************************************************************/
-
 #include <Adafruit_NeoPixel.h>
 // ######################################//
 // ## NeoPixel Variables ## //
