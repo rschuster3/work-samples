@@ -1,0 +1,10 @@
+apache-beam[gcp]==2.8.0
+# apache-beam also installs the following, which are important:
+#    gapic-google-cloud-datastore-v1==0.90.4
+#    proto-google-cloud-datastore-v1==0.90.4
+celery
+Flask==1.0.2
+googledatastore==7.0.1
+gunicorn==19.9.0
+oauth2client==2.2.0
+protobuf==3.6.0

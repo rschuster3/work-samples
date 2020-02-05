@@ -1,0 +1,22 @@
+# Names of nodes to start
+CELERYD_NODES="worker1"
+
+# Absolute or relative path to the 'celery' command:
+CELERY_BIN="/usr/local/bin/celery"
+
+# App instance to use
+CELERY_APP="dataflow_tasks"
+
+# Where to chdir at start.
+CELERYBEAT_CHDIR="/usr/src/app/dataflow_migrations"
+
+# Extra arguments to celerybeat
+CELERYBEAT_OPTS="--time-limit=720000 --concurrency=4 --loglevel=INFO"
+
+# Workers should run as an unprivileged user.
+# User and group created manually in Dockerfile
+CELERYD_USER="celery"
+CELERYD_GROUP="celery"
+
+CELERY_TASK_SERIALIZER="pickle"
+CELERY_RESULT_SERIALIZER="pickle"
