@@ -1,0 +1,10 @@
+FROM python:3.7-slim
+
+RUN pip install flask
+
+COPY ./poc_app /poc_app
+WORKDIR /poc_app
+
+ENTRYPOINT ["python"]
+
+CMD ["app.py"]
