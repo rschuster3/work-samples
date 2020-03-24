@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+
+package kafka_poc;
+
+
+message Hello {
+    string hello = 1;
+}
