@@ -13,12 +13,14 @@ Now to run ...
 
 From the `services/` directory ...
 
-`kubectl apply -f ../kube/kafka_poc/kafka-poc-secrets.yaml`
-`docker build . -t kafka-poc-producer-0.0.1 -f kafka_poc/Dockerfile_producer`
-`docker build . -t kafka-poc-consumer-0.0.1 -f kafka_poc/Dockerfile_consumer`
-`kubectl apply -f ../kube/kafka_poc/kafka-poc-producer.yaml`
-`kubectl apply -f ../kube/kafka_poc/kafka-poc-consumer.yaml`
-`kubectl get pods -l meridian-app=kafka-poc`
+```
+kubectl apply -f ../kube/kafka_poc/kafka-poc-secrets.yaml
+docker build . -t kafka-poc-producer-0.0.1 -f kafka_poc/Dockerfile_producer
+docker build . -t kafka-poc-consumer-0.0.1 -f kafka_poc/Dockerfile_consumer
+kubectl apply -f ../kube/kafka_poc/kafka-poc-producer.yaml
+kubectl apply -f ../kube/kafka_poc/kafka-poc-consumer.yaml
+kubectl get pods -l meridian-app=kafka-poc
+```
 
 ... get the pod name that has `consumer` in it ...
 
@@ -30,14 +32,18 @@ From the `services/` directory ...
 
 Inside the Nginx container do ...
 
-`apt-get update`
-`apt-get install -y curl procps`
-`curl localhost`
+```
+apt-get update
+apt-get install -y curl procps
+curl localhost
+```
 
 You should see "Hello, world!".
 
 Don't forget to clean up!
 
-`kubectl delete deployment meridian-kafka-poc-producer`
-`kubectl delete deployment meridian-kafka-poc-consumer`
-`kubectl delete secret meridian-kafka-poc-config`
+```
+kubectl delete deployment meridian-kafka-poc-producer
+kubectl delete deployment meridian-kafka-poc-consumer
+kubectl delete secret meridian-kafka-poc-config
+```
