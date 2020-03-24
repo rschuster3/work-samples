@@ -1,10 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: openapi-docs
+  name: poc-app
 spec:
   selector:
-    app: openapi-docs
+    app: poc-app
   ports:
   - protocol: TCP
     port: 80

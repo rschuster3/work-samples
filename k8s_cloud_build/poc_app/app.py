@@ -1,7 +1,7 @@
 from flask import Flask
 
 
-app = Flask('openapi-docs')
+app = Flask('poc-app')
 
 
 @app.route('/')

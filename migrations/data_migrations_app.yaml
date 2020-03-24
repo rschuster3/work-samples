@@ -1,0 +1,11 @@
+runtime: custom
+env: flex
+
+service: migrations-flex
+
+resources:
+  cpu: 2
+  memory_gb: 6
+
+automatic_scaling:
+  max_num_instances: 1

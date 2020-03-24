@@ -2,8 +2,8 @@ FROM python:3.7-slim
 
 RUN pip install flask
 
-COPY ./openapi_docs /openapi_docs
-WORKDIR /openapi_docs
+COPY ./poc_app /poc_app
+WORKDIR /poc_app
 
 ENTRYPOINT ["python"]
 

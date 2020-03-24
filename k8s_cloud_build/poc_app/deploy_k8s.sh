@@ -15,16 +15,16 @@ sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" k8s-deploy.yaml.tpl | \
   sed "s/IMAGE_TAG/${TAG_NAME}/g" > k8s-deploy.yaml
 
 # Create deployment if none exists, or update if one does exist
-NUM_DEPLOYMENTS=$(kubectl get deployments openapi-docs | wc -l)
+NUM_DEPLOYMENTS=$(kubectl get deployments poc-app | wc -l)
 if [ $NUM_DEPLOYMENTS -lt 2 ]; then
   kubectl apply -f k8s-deploy.yaml
 else
-  kubectl set image deployment openapi-docs \
-    openapi-docs=gcr.io/${PROJECT_ID}/openapi-docs:${TAG_NAME}
+  kubectl set image deployment poc-app \
+    poc-app=gcr.io/${PROJECT_ID}/poc-app:${TAG_NAME}
 fi
 
 # Create service if none exists
-NUM_SERVICES=$(kubectl get services openapi-docs | wc -l)
+NUM_SERVICES=$(kubectl get services poc-app | wc -l)
 if [ $NUM_SERVICES -lt 2 ]; then
   kubectl apply -f k8s-service.yaml
 fi

@@ -19,6 +19,9 @@ gcloud projects add-iam-policy-binding ${PROJECT_NUMBER} \
     --role=roles/container.developer
 ```
 
+### Encrypted Credentials
+If they aren't already there, add encrypted Google Cloud Service Account credentials for each of our projects under `__dev_tools__/auto_deployment/`. Their file names should match our project names (that's how the manifests here know which credentials to use: by looking at Google Cloud Project ID).
+
 
 ## Rollbacks
 You should have `gcloud` installed and authenticated, and you should have installed `kubectl` for `gcloud`:

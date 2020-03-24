@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: openapi-docs
+  name: poc-app
   labels:
-    app: openapi-docs
+    app: poc-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: openapi-docs
+      app: poc-app
   template:
     metadata:
       labels:
-        app: openapi-docs
+        app: poc-app
     spec:
       containers:
-      - name: openapi-docs
-        image: gcr.io/GOOGLE_CLOUD_PROJECT/openapi-docs:IMAGE_TAG
+      - name: poc-app
+        image: gcr.io/GOOGLE_CLOUD_PROJECT/poc-app:IMAGE_TAG
         ports:
         - containerPort: 8080
