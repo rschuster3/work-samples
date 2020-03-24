@@ -1,4 +1,7 @@
-THIS IS A TEMPORARY README FOR THIS POC
+### What's Happening Here?
+
+This is a simple poc Go service that uses an existing Kafka broker deployed on a Kubernetes cluster to send a "Hello world" message from one service to another. The message is a protobuf. It then prints the received message in `hello.txt` which is mounted to a volume shared between `kafka-container` and `nginx-container`. This allows us to verify the Kafka messenging service worked. Alternatively I could've forced `kafka-container` to hang using `CMD tail -f /dev/null`, exec'd into it, and verified `hello.txt` was there. Either way works.
+
 
 ### To Run
 
@@ -38,13 +41,3 @@ Don't forget to clean up!
 `kubectl delete deployment meridian-kafka-poc-producer`
 `kubectl delete deployment meridian-kafka-poc-consumer`
 `kubectl delete secret meridian-kafka-poc-config`
-
-
-### What's Happening Here?
-
-This is a REALLY SIMPLE Go service that uses the CL Kafka broker to send messages to itself. It then prints the received message in `hello.txt` which is hoped to a volume shared between `kafka-container` and `nginx-container`. This allows us to verify the Kafka messenging service worked. Alternatively I could've forced `kafka-container` to hang using `CMD tail -f /dev/null`, exec'd into it, and verified `hello.txt` was there. Either way works.
-
-
-### What Do We Need To Update?
-
-Also we need to update the `image` in the Kubernetes manifest to one that's served on Quay and remove the `imagePullPolicy`. I just added that part to get it working locally. Finally we'd need to work this into our CI/CD build.
