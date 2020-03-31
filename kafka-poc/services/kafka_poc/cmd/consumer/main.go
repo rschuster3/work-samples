@@ -2,47 +2,67 @@ package main
 
 
 import (
-    "fmt"
-    "os"
+    "log"
 
-    "some-repo/services/kafka_poc"
+    "github.com/golang/protobuf/proto"
+    "go.uber.org/zap"
+
+    "stash.arubanetworks.com/ac/meridian-positioning-service/services/kafka_poc"
+    "stash.arubanetworks.com/ac/meridian-positioning-service/services/kafka_poc/messages"
+)
+
+
+var (
+    np, _ = zap.NewProduction()
+    logger = np.Sugar()
 )
 
 
 func main() {
     // Get Kafka service info from ADS
-    kafkaStr := kafka_poc.GetKafkaInfo()
-    kafkaConn := kafka_poc.GetKafkaConn(kafkaStr)
+    adsKafkaJson, err := kafka_poc.GetKafkaInfo()
+    if err != nil {
+        log.Fatal(err)
+    }
 
-    // Get topic
-    topic := kafka_poc.GetKafkaTopic()
+    // Get Kafka service host:port
+    kafkaConn, err := kafka_poc.GetKafkaConn(adsKafkaJson)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Get Kafka topic name
+    topic, err := kafka_poc.GetKafkaTopic()
+    if err != nil {
+        log.Fatal(err)
+    }
 
     // Create a consumer
     partitionConsumer, err := kafka_poc.NewConsumer(topic, kafkaConn)
     if err != nil {
-        fmt.Println("Failed to create Sarama partition consumer:", err)
+        log.Fatal(err)
     }
 
-    fmt.Println("Waiting for messages...")
+    logger.Infow(
+	"Waiting for messages...",
+        "type", "status_update",
+    )
 
-    // Grab the message
-    output_msg := <-partitionConsumer.Messages()
+    for {
+        select {
+        // Grab the message
+        case outputMsg := <-partitionConsumer.Messages():
+            receivedHello := &messages.Hello{}
+            err := proto.Unmarshal(outputMsg.Value, receivedHello)
+	    if err != nil {
+                log.Fatal(err)
+            }
 
-    // Write message to a file we can pick up later
-    f, err := os.Create("hello.txt")
-    if err !=nil {
-	fmt.Println(err)
-	return
-    }
-    _, err = f.WriteString(string(output_msg.Value))
-    if err != nil {
-	fmt.Println(err)
-	f.Close()
-	return
-    }
-    err = f.Close()
-    if err != nil {
-        fmt.Println(err)
-	return
+            // Write message to the logs 
+	    logger.Infow(
+                receivedHello.GetHello(),
+                "type", "kafka_message",
+            )
+        }
     }
 }

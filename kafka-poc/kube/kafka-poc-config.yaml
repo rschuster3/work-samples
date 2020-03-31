@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: meridian-kafka-poc-config
+data:
+  topic: meridian-kafka-poc
+  kafka_conf: http://xxxx/config/kafka.json

@@ -1,0 +1,31 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: meridian-kafka-poc-producer
+  labels:
+    meridian-app: kafka-poc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      meridian-app: kafka-poc
+  template:
+    metadata:
+      labels:
+        meridian-app: kafka-poc
+    spec:
+      containers:
+      - name: kafka-producer-container
+        image: kafka-poc-producer-0.0.1:latest 
+        imagePullPolicy: Never
+        env:
+          - name: TOPIC
+            valueFrom:
+              configMapKeyRef:
+                name: meridian-kafka-poc-config
+                key: topic
+          - name: KAFKA_CONF
+            valueFrom:
+              configMapKeyRef:
+                name: meridian-kafka-poc-config
+                key: kafka_conf

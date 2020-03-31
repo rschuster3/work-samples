@@ -5,9 +5,10 @@ import (
     "log"
     "os"
 
+    "github.com/golang/protobuf/proto"
     "github.com/Shopify/sarama"
 
-    "some-repo/services/meridian_utils"
+    "stash.arubanetworks.com/ac/meridian-positioning-service/services/kafka_poc/messages"
 )
 
 
@@ -28,13 +29,19 @@ func NewProducer(kafkaConn string) (sarama.SyncProducer, error) {
 }
 
 
-func Publish(topic string, message *Hello, producer sarama.SyncProducer) {
+func Publish(topic string, message messages.Hello, producer sarama.SyncProducer) error {
+    messageToSendBytes, err := proto.Marshal(&message)
+    if err != nil {
+        return err
+    }
+
     // Have a producer publish a message to a Kafka topic
     msg := &sarama.ProducerMessage {
         Topic: topic,
-        Value: sarama.StringEncoder(message.Hello),
+        Value: sarama.ByteEncoder(messageToSendBytes),
     }
 
-    _, _, err := producer.SendMessage(msg)
-    meridian_utils.Check(err)
+    _, _, err = producer.SendMessage(msg)
+
+    return err
 }

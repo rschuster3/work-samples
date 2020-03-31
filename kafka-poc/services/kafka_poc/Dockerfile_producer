@@ -1,14 +1,12 @@
 FROM quay.io/arubadevops/ubuntu:golang114-dev-latest as builder
 
 RUN apt-get update && apt-get install -y git-core
-RUN apt-get install -y curl
 
 # set the working directory
 WORKDIR $GOPATH/src/stash.arubanetworks.com/ac/meridian-positioning-service/services
 
 # copy context
 COPY kafka_poc ./kafka_poc
-COPY meridian_utils ./meridian_utils
 COPY go.mod .
 
 # build executable to /app
