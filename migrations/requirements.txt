@@ -3,7 +3,7 @@ apache-beam[gcp]==2.8.0
 #    gapic-google-cloud-datastore-v1==0.90.4
 #    proto-google-cloud-datastore-v1==0.90.4
 celery
-Flask==1.0.2
+Flask==2.3.2
 googledatastore==7.0.1
 gunicorn==19.9.0
 oauth2client==2.2.0
